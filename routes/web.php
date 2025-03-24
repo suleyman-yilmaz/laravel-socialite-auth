@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -21,4 +22,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
-require __DIR__.'/auth.php';
+/**
+ * Google and Facebook Login
+ */
+Route::controller(SocialiteController::class)->group(function () {
+    Route::get('auth/redirection/{provider}', 'authProviderRedirect')->name('auth.redirection');
+
+    Route::get('auth/{provider}/callback', 'socialAuthentication')->name('auth.callback');
+});
+
+require __DIR__ . '/auth.php';
